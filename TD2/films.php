@@ -1,11 +1,4 @@
-<DOCTYPE html>
-	<html>
-	<head>
-		<meta charset="utf-8"/>
-		<title> Movie list </title>
-	</head>
-	<body>
-		<h1> Movie List </h1>
+
 <?php
 
 /* fonction render_movie_list */
@@ -17,16 +10,16 @@ function render_movie_list ($movies, $genre = "", $annee = "")
 			$rendu = "<ul>";
 		foreach ($movies as $key) {
 			$rendu.= "<li>";
-			/*if ($key["year"] >= date('Y')-$annee) // teste si le film a moins de $annee ans et il le met en gras
+			if ($key["releaseDate"] >= date('Y')-$annee) // teste si le film a moins de $annee ans et il le met en gras
 			{
-				$rendu.= $key["title"]." "."<strong>". "(".$key["year"].")"."</strong>";
+				$rendu.= $key["title"]." "."<strong>". "(".$key["releaseDate"].")"."</strong>";
 				$rendu.= "</li>";
 			}
 			else // sinon il ne fait rien
 			{
-				$rendu.= $key["title"]. " ". "(" . $key["year"]. ")";
+				$rendu.= $key["title"]. " ". "(" . $key["releaseDate"]. ")";
 				$rendu.= "</li>";
-			}*/
+			}
 			$rendu.= "<ul>";
 			if ($key["genre"] == $genre ) // test si le genre est ce qu'on veut et le met en bleu
 			{
@@ -59,9 +52,6 @@ function render_movie_list ($movies, $genre = "", $annee = "")
 	}	
 }
 
-require "data.movies.php";
-echo render_movie_list($movies, "Science Fiction", 10);
 
 ?>
-</body>
-</html>
+
