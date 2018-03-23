@@ -1,0 +1,116 @@
+Fil Rouge 
+
+Séléctions simples
+
+a. SELECT * FROM Cast
+b. 
+	SELECT * FROM Cast 
+	WHERE deathYear IS NULL
+c. 
+	SELECT * FROM Cast 
+	WHERE 2018-birthYear > 65
+d. 
+	SELECT firstname, lastname,MIN(birthYear)FROM `Cast`
+	WHERE deathYear IS NULL
+e. 
+	SELECT * FROM Cast 
+	WHERE 2018-birthYear > 30 AND 2018-birthYear < 50 
+	ORDER BY birthYear
+f. 
+	SELECT * FROM Movie 
+	WHERE title LIKE 'the%'
+
+Jointures 
+
+a.	
+	SELECT title, releaseDate 
+	FROM Movie 
+	JOIN Country ON Movie.idCountry = Country.code 
+	WHERE Country.name = "United States of America" 
+	ORDER BY releaseDate
+b. 
+	SELECT title, releaseDate, Country.name 
+	FROM Movie 
+	JOIN Country ON Movie.idCountry = Country.code 
+	WHERE CURDATE()-releaseDate < 100000 
+	ORDER BY releaseDate
+c. 
+	SELECT title, Genre.name 
+	FROM Movie 
+	JOIN MovieGenre ON Movie.id = idMovie 
+	JOIN Genre ON idGenre = Genre.id 
+	JOIN Country ON Movie.idCountry = Country.code 
+	WHERE (Country.name = "United states of America" OR Country.name = "Italy") AND CURDATE()-releaseDate > 200000
+d. 
+	SELECT DISTINCT firstname, lastname 
+	FROM Cast 
+	JOIN Actor ON Cast.id = idActor 
+	ORDER BY firstname, lastname
+e. 
+	SELECT title, Genre.name, Actor.name
+	FROM Movie 
+	JOIN MovieGenre ON Movie.id = MovieGenre.idMovie 
+	JOIN Genre ON idGenre = Genre.id 
+	JOIN Country ON Movie.idCountry = Country.code 
+	JOIN Actor ON Movie.id = Actor.idMovie
+	JOIN Cast ON Cast.id = idActor
+	WHERE Country.name = "France" 
+	AND firstname = "élodie"
+	AND lastname = "deshayes"
+f. 
+	SELECT Cast.firstname, Cast.lastname, Actor.name 
+	FROM Cast 
+	JOIN Actor ON Cast.id = idActor
+    WHERE idMovie IN (
+    	SELECT idMovie FROM Director 
+		JOIN Cast ON Cast.id = idDirector 
+		WHERE Cast.firstname = "Myriam" AND Cast.lastname = "Anik"
+		)
+	ORDER BY Actor.name
+
+Requêtes Complexes 
+
+a. 
+	SELECT Genre.name, COUNT(idMovie) 
+	FROM Genre 
+	JOIN MovieGenre ON idGenre = Genre.id 
+	GROUP BY Genre.name
+
+b.
+	SELECT COUNT(idMovie) FROM Actor 
+	WHERE Actor.name = "Voix off" 
+
+c. 
+	SELECT Cast.firstname, Cast.lastname FROM Cast 
+	JOIN Actor ON Cast.id = Actor.idActor 
+	WHERE Actor.name = "Développeur" OR Actor.name = "Développeuse"
+
+d. 
+	SELECT title FROM Movie 
+	JOIN Director ON Movie.id = idMovie 
+	GROUP BY idDirector 
+	HAVING COUNT(Director.idDirector) >1 
+
+e. 
+	SELECT 
+		title, 
+	    Genre.name, 
+	    Country.name, 
+	    releaseDate,
+	    lastName,
+	    firstName
+	    
+	FROM
+		Movie
+	    JOIN MovieGenre ON MovieGenre.idMovie = Movie.id
+	    JOIN Genre ON MovieGenre.idGenre = Genre.id
+	    JOIN Country ON Country.code = Movie.idCountry
+	    JOIN Director ON Director.idMovie = Movie.id
+	    JOIN Cast ON Director.idDirector = Cast.id
+	    
+	WHERE
+		Movie.title LIKE "%the%"
+	    AND Genre.name IN ("Action","Drama","Adventure")
+	    AND Country.name IN ("United States of America", "France")
+	    AND releaseDate > 19990000 AND releaseDate < 20170000
+	    AND CONCAT(firstName," ",lastName) LIKE "%Nolan%"
