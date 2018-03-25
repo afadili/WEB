@@ -12,24 +12,22 @@
 	</head>
 	<body>
 		<h1> Movie Search </h1>
-		<form action="fonctionsearch.php" method="GET">
+		<form action="result.php" method="GET">
 		<fieldset>
 			<legend> Movie </legend><p>
 			<fieldset> Titre du film : <input type="text" name="titre"></p>
-			<p> Date de sortie (start) : <input type="date" name="date"></p>
-			<p> Date de sortie (end): <input type="date" name="date"></p>
+			<p> Date de sortie (start) : <input type="date" name="min_date"></p>
+			<p> Date de sortie (end): <input type="date" name="max_date"></p>
 			</fieldset>
 			<fieldset>
 			<legend> Genre </legend>
-				<input type ="checkbox" name ="action" value = "action">Action<br>
-				<input type="checkbox" name ="drama" value = "drama">Drama<br>
-				<input type="checkbox" name ="science fiction" value = "science fiction">Science Fiction<br>
-				<input type ="checkbox" name="animation" value = "animation">Animation<br>
-				<input type ="checkbox" name ="adventure" value = "adventure">Adventure<br>
-				<input type ="checkbox" name ="horror" value = "horror">Horror<br>
-				<input type="checkbox" name ="comedy" value = "comedy">Comedy<br>
-				<input type ="checkbox" name ="thriller" value = "thriller">Thriller<br>
-				<input type ="checkbox" name ="western" value = "western">Western<br>
+				<?php 
+				require "model/Genre.class.php";
+				foreach (Genre::getAll() as $genre) {
+					echo "<label><input type = \"checkbox\" name =\"genre[]\" value = {$genre->getId()} > 
+						{$genre->getName()} </label> <br> ";
+				}
+				?>
 				</fieldset>
 			</p></fieldset>
 			<fieldset>
@@ -40,5 +38,6 @@
 			</fieldset>
 			<p><input type="submit"></p>
 		</form>
+
 	</body>
 </html>

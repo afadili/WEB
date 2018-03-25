@@ -64,12 +64,10 @@ class Genre {
 	public static function getAll() {
 		 $stmt = MyPDO::getInstance()->prepare("
 		 	SELECT * 
-		 	FROM Cast 
-		 	JOIN Director ON Cast.id = idDirector 
-		 	WHERE idMovie=?
+		 	FROM Genre
 		 ");
-		 $stmt->execute(array($idMovie));
-		 $stmt->setFetchMode(PDO::FETCH_CLASS,"Cast");
+		 $stmt->execute();
+		 $stmt->setFetchMode(PDO::FETCH_CLASS,"Genre");
 		 if (($object = $stmt->fetchAll()) !== false)
 			return $object;
 		 else
